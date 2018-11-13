@@ -27,22 +27,32 @@ public class Rocket : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody> ();
-		rigidBody.centerOfMass = transform.position;
+		rigidBody.centerOfMass = transform.position; //Control rotation by pivot
 		audioSource = GetComponent<AudioSource> ();
 		colliders = GetComponentsInChildren<Collider> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(state == State.Alive){
-			RespondToThrust ();
-			RespondToRotation ();
-		}
+		/*if(state == State.Alive){
+			//RespondToThrust ();
+			//RespondToRotation ();
+			RespondToInput();
+		}*/
 
 		if (Debug.isDebugBuild){ //Debug keys enabled only on development mode
 			if (Input.GetKeyDown("c")){
 				ToggleColliders ();
 			}
+		}
+			
+	}
+
+	void FixedUpdate(){
+		if(state == State.Alive){
+			//RespondToThrust ();
+			//RespondToRotation ();
+			RespondToInput();
 		}
 	}
 
@@ -112,6 +122,26 @@ public class Rocket : MonoBehaviour {
 			rigidBody.freezeRotation = false; //Take control over rotation*/
 
 			rigidBody.AddTorque (-Vector3.forward * torqueFactor);
+		}
+	}
+
+	private void ApplyRotation(Vector3 direction){
+		rigidBody.AddTorque (direction * torqueFactor);
+
+	}
+
+	private void RespondToInput(){
+
+		if (Input.GetKey("a")){
+			ApplyRotation (Vector3.forward);
+		}
+
+		if (Input.GetKey("d")){
+			ApplyRotation (-Vector3.forward);
+		}
+
+		if (Input.GetKey("a") && Input.GetKey("d")){
+			ApplyThrust ();
 		}
 	}
 
