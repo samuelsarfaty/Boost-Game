@@ -27,6 +27,7 @@ public class Rocket : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody> ();
+		rigidBody.centerOfMass = transform.position;
 		audioSource = GetComponent<AudioSource> ();
 		colliders = GetComponentsInChildren<Collider> ();
 	}
