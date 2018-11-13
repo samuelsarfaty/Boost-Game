@@ -8,6 +8,7 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float rotationThrust = 0;
 	[SerializeField] float mainThrust = 0;
 	[SerializeField] float levelLoadDelay = 0;
+	[SerializeField] float torqueFactor = 0; //TODO used for rotation
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
 	[SerializeField] AudioClip successSound = null;
@@ -96,16 +97,20 @@ public class Rocket : MonoBehaviour {
 
 		if (Input.GetKey(KeyCode.A)){
 			//Rotate left
-			rigidBody.freezeRotation = true; //Take control over rotation
+			/*rigidBody.freezeRotation = true; //Take control over rotation
 			transform.Rotate (Vector3.forward * rotationThisFrame);
-			rigidBody.freezeRotation = false; //Take control over rotation
+			rigidBody.freezeRotation = false; //Take control over rotation*/
+
+			rigidBody.AddTorque (Vector3.forward * torqueFactor);
 		} 
 
 		else if (Input.GetKey(KeyCode.D)){
 			//Rotate right
-			rigidBody.freezeRotation = true; //Take control over rotation
+			/*rigidBody.freezeRotation = true; //Take control over rotation
 			transform.Rotate (-Vector3.forward * rotationThisFrame);
-			rigidBody.freezeRotation = false; //Take control over rotation
+			rigidBody.freezeRotation = false; //Take control over rotation*/
+
+			rigidBody.AddTorque (-Vector3.forward * torqueFactor);
 		}
 	}
 
