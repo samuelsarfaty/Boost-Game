@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour {
 
-	//[SerializeField] float rotationThrust = 0;
 	[SerializeField] float mainThrust = 0;
 	[SerializeField] float levelLoadDelay = 0;
 	[SerializeField] float torqueFactor = 0; //TODO used for rotation
@@ -21,7 +20,7 @@ public class Rocket : MonoBehaviour {
 	Rigidbody rigidBody;
 	AudioSource audioSource;
 
-	enum State {Alive, Dying, Transcending}
+	enum State {Alive, Dying, Flying}
 	State state = State.Alive;
 
 	// Use this for initialization
@@ -90,7 +89,6 @@ public class Rocket : MonoBehaviour {
 	}
 
 	private void StartWinSequence(){
-		state = State.Transcending;
 		audioSource.Stop ();
 		audioSource.PlayOneShot (successSound);
 		successParticles.Play ();
