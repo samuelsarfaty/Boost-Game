@@ -5,26 +5,20 @@ using Cinemachine;
 
 public class Checkpoint : MonoBehaviour {
 
-	[SerializeField] CinemachineVirtualCamera virtualCamera;
-	[SerializeField] float dollyTargetPosition;
-	private CinemachineTrackedDolly trackedDolly;
+	[SerializeField] int nextCameraIndex = 0;
+	private CinemachineBrain cmBrain;
 
 	void Awake(){
-		trackedDolly = virtualCamera.GetCinemachineComponent<CinemachineTrackedDolly> ();
+		cmBrain = Camera.main.GetComponent<CinemachineBrain> ();
 	}
 
 	void OnCollisionEnter(Collision other){
 		if (other.gameObject.tag == "Player"){
-			FixCamera (dollyTargetPosition);
+			SetVirtualCameraIndex (nextCameraIndex);
 		}
 	}
 
-	void FixCamera(float targetPosition){
-		transform.rotation = Quaternion.identity;
-		trackedDolly.m_AutoDolly.m_Enabled = false;
-		virtualCamera.Follow = null;
-		virtualCamera.LookAt = null;
-		trackedDolly.m_PathPosition = targetPosition;
-
+	void SetVirtualCameraIndex (int index){
+		
 	}
 }
