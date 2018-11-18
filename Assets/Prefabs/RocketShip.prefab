@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 114803345120075946}
   m_Layer: 0
   m_Name: RocketShip
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,7 +219,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1942012294949480}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.87, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4846355261089910}
@@ -519,10 +519,8 @@ MonoBehaviour:
   torqueFactor: 20
   mainEngineSound: {fileID: 8300000, guid: c7bb6505f51a5944e9f3885d84ac4e8c, type: 3}
   deathSound: {fileID: 8300000, guid: 04576e267bd96ee418bd96ac41f60339, type: 3}
-  successSound: {fileID: 8300000, guid: 6ee5b93a30d15d14a888a380ee1c14ab, type: 3}
   mainEngineParticles: {fileID: 198217604521026492}
   deathparticles: {fileID: 198395594949698598}
-  successParticles: {fileID: 198928495753249288}
 --- !u!198 &198217604521026492
 ParticleSystem:
   m_ObjectHideFlags: 1
