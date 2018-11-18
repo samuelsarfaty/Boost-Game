@@ -11,11 +11,6 @@ public class CameraFollower : MonoBehaviour {
 		player = GameObject.FindObjectOfType<Rocket> ();
 		offset = transform.position - player.transform.position;
 	}
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {

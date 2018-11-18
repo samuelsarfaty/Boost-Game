@@ -11,11 +11,11 @@ public class Rocket : MonoBehaviour {
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
-	[SerializeField] AudioClip successSound = null;
+	//[SerializeField] AudioClip successSound = null;
 
 	[SerializeField] ParticleSystem mainEngineParticles = null;
 	[SerializeField] ParticleSystem deathparticles = null;
-	[SerializeField] ParticleSystem successParticles = null;
+	//[SerializeField] ParticleSystem successParticles = null;
 
 	Rigidbody rigidBody;
 	AudioSource audioSource;
@@ -42,13 +42,6 @@ public class Rocket : MonoBehaviour {
 
 		switch(collision.gameObject.tag)
 		{
-		case ("Friendly"):
-			print ("OK");
-			break;
-
-		case ("Finish"):
-			StartWinSequence ();
-			break;
 
 		default:
 			StartDeathSequence ();
@@ -88,13 +81,6 @@ public class Rocket : MonoBehaviour {
 		mainEngineParticles.Play ();
 	}
 
-	private void StartWinSequence(){
-		audioSource.Stop ();
-		audioSource.PlayOneShot (successSound);
-		successParticles.Play ();
-		Invoke ("LoadNextScene", levelLoadDelay);
-	}
-
 	private void StartDeathSequence(){
 		state = State.Dying;
 		audioSource.Stop ();
@@ -103,7 +89,14 @@ public class Rocket : MonoBehaviour {
 		Invoke ("RestartScene", levelLoadDelay);
 	}
 
-	private void LoadNextScene(){
+	/*private void StartWinSequence(){
+		audioSource.Stop ();
+		audioSource.PlayOneShot (successSound);
+		successParticles.Play ();
+		Invoke ("LoadNextScene", levelLoadDelay);
+	}*/
+
+	/*private void LoadNextScene(){
 	int currentSceneIndex = SceneManager.GetActiveScene ().buildIndex;
 	int nextSceneIndex = currentSceneIndex + 1;
 
@@ -112,10 +105,10 @@ public class Rocket : MonoBehaviour {
 	}
 
 	SceneManager.LoadScene (nextSceneIndex);
-}
+}*/
 
-	private void RestartScene(){
+	/*private void RestartScene(){
 		SceneManager.LoadScene (0);
-	}
+	}*/
 
 }
