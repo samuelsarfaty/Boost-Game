@@ -43,6 +43,9 @@ public class Rocket : MonoBehaviour {
 		switch(collision.gameObject.tag)
 		{
 
+		case "Friendly":
+			break;
+
 		default:
 			StartDeathSequence ();
 			break;
