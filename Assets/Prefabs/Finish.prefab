@@ -108,4 +108,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f9bef97e2496043914db07d9c73c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextCameraIndex: 1
+  nextCameraIndex: 0

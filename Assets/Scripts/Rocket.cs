@@ -58,11 +58,11 @@ public class Rocket : MonoBehaviour {
 			ApplyRotation (Vector3.forward);
 		}
 
-		if (Input.GetKey("d")){
+		if (Input.GetKey("l")){
 			ApplyRotation (-Vector3.forward);
 		}
 
-		if (Input.GetKey("a") && Input.GetKey("d")){
+		if (Input.GetKey("a") && Input.GetKey("l")){
 			ApplyThrust ();
 		} else {
 			mainEngineParticles.Stop ();
