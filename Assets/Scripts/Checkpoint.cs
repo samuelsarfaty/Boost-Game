@@ -6,11 +6,15 @@ using Cinemachine;
 public class Checkpoint : MonoBehaviour {
 
 	[SerializeField] int nextCameraIndex = 0;
-	private CinemachineBrain cmBrain;
+	private static Animator cameraManager;
 
 	void Awake(){
-		cmBrain = Camera.main.GetComponent<CinemachineBrain> ();
+		if (!cameraManager){
+			cameraManager = GameObject.Find ("CameraManager").GetComponent<Animator> ();
+		}
 	}
+
+
 
 	void OnCollisionEnter(Collision other){
 		if (other.gameObject.tag == "Player"){
@@ -19,6 +23,6 @@ public class Checkpoint : MonoBehaviour {
 	}
 
 	void SetVirtualCameraIndex (int index){
-		
+		cameraManager.SetInteger ("cameraIndex", index);
 	}
 }
