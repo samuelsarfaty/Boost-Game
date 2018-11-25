@@ -52,7 +52,7 @@ public class Rocket : MonoBehaviour {
 			if(state == State.Flying){
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
-				state = State.Grounded;
+				//state = State.Grounded;
 			}
 
 			//Invoke ("SetGroundedState", 0.1f);
@@ -65,11 +65,11 @@ public class Rocket : MonoBehaviour {
 		}
 	}
 
-	/*void OnCollisionExit(Collision other){
-		if (other.gameObject.tag == "Checkpoint"){
+	void OnCollisionExit(Collision other){
+		if (other.gameObject.tag == "Checkpoint" && state == State.Grounded){
 			state = State.Flying;
 		}
-	}*/
+	}
 
 	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration){
 		rigidBody.isKinematic = true;
@@ -121,6 +121,7 @@ public class Rocket : MonoBehaviour {
 		}
 
 		rigidBody.isKinematic = false;
+		state = State.Grounded;
 	}
 
 	IEnumerator SnapRotation (float duration){
