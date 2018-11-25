@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114766692332725578}
   m_Layer: 0
   m_Name: Finish
-  m_TagString: Friendly
+  m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,4 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f9bef97e2496043914db07d9c73c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextCameraIndex: 0
+  nextCameraIndex: 1
+  playerSnapYPosition: 0.9

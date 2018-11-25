@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Oscilator : MonoBehaviour {
 
-	[SerializeField] Vector3 movementVector;
-	[SerializeField] float period;
+	[SerializeField] Vector3 movementVector = Vector3.zero;
+	[SerializeField] float period = 0f;
 
 	[Range(0,1)]
 	[SerializeField]

@@ -5,23 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour {
 
-	[SerializeField] float mainThrust = 0;
-	[SerializeField] float levelLoadDelay = 0;
-	[SerializeField] float torqueFactor = 0; //TODO used for rotation
+	[SerializeField] float mainThrust = 0f;
+	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
+	[SerializeField] float ySnapPosition = 0f;
+	[SerializeField] float snapSpeed = 0f;
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
-	//[SerializeField] AudioClip successSound = null;
 
 	[SerializeField] ParticleSystem mainEngineParticles = null;
 	[SerializeField] ParticleSystem deathparticles = null;
-	//[SerializeField] ParticleSystem successParticles = null;
 
 	Rigidbody rigidBody;
 	AudioSource audioSource;
 
-	enum State {Alive, Dying, Flying}
-	State state = State.Alive;
+
+	public enum State {Flying, Dying, Grounded}
+	public State state = State.Flying;
 
 	// Use this for initialization
 	void Start () {
@@ -31,25 +31,50 @@ public class Rocket : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		if(state == State.Alive){
+		if(state != State.Dying){
 			RespondToInput();
 		}
 	}
 
-	void OnCollisionEnter(Collision collision){
+	void OnCollisionEnter(Collision other){
 
-		if (state != State.Alive){ return; }
+		if (state != State.Flying){ return; }
 
-		switch(collision.gameObject.tag)
+		//if (state == State.Dying) {return;}
+
+		switch(other.gameObject.tag)
 		{
 
 		case "Friendly":
+			break;
+
+		case "Checkpoint":
+			if(state == State.Flying){
+				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
+				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
+				state = State.Grounded;
+			}
+
+			//Invoke ("SetGroundedState", 0.1f);
+
 			break;
 
 		default:
 			StartDeathSequence ();
 			break;
 		}
+	}
+
+	/*void OnCollisionExit(Collision other){
+		if (other.gameObject.tag == "Checkpoint"){
+			state = State.Flying;
+		}
+	}*/
+
+	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration){
+		rigidBody.isKinematic = true;
+		StartCoroutine (SnapPosition (position, posDuration));
+		StartCoroutine (SnapRotation (rotDuration));
 	}
 		
 	private void RespondToInput(){
@@ -84,34 +109,40 @@ public class Rocket : MonoBehaviour {
 		mainEngineParticles.Play ();
 	}
 
+	IEnumerator SnapPosition (Vector3 position, float duration){
+		Vector3 currentPos = transform.position;
+		float progress = 0f;
+		float startTime = Time.time;
+
+		while (progress < 1){
+			progress = (Time.time - startTime) / duration;
+			transform.position = Vector3.Lerp (currentPos, position, progress);
+			yield return null;
+		}
+
+		rigidBody.isKinematic = false;
+	}
+
+	IEnumerator SnapRotation (float duration){
+		Quaternion currentRotation = transform.rotation;
+		float progress = 0f;
+		float startTime = Time.time;
+
+		while (progress < 1){
+			progress = (Time.time - startTime) / duration;
+			transform.rotation = Quaternion.Lerp (currentRotation, Quaternion.identity, progress);
+			yield return null;
+		}
+
+		rigidBody.isKinematic = false;
+	}
+
 	private void StartDeathSequence(){
 		state = State.Dying;
 		audioSource.Stop ();
 		audioSource.PlayOneShot (deathSound);
 		deathparticles.Play ();
-		Invoke ("RestartScene", levelLoadDelay);
+		//Invoke ("RestartScene", levelLoadDelay);
 	}
-
-	/*private void StartWinSequence(){
-		audioSource.Stop ();
-		audioSource.PlayOneShot (successSound);
-		successParticles.Play ();
-		Invoke ("LoadNextScene", levelLoadDelay);
-	}*/
-
-	/*private void LoadNextScene(){
-	int currentSceneIndex = SceneManager.GetActiveScene ().buildIndex;
-	int nextSceneIndex = currentSceneIndex + 1;
-
-	if(nextSceneIndex > SceneManager.sceneCountInBuildSettings){
-		nextSceneIndex = 0;
-	}
-
-	SceneManager.LoadScene (nextSceneIndex);
-}*/
-
-	/*private void RestartScene(){
-		SceneManager.LoadScene (0);
-	}*/
 
 }
