@@ -9,6 +9,7 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
 	[SerializeField] float ySnapPosition = 0f;
 	[SerializeField] float snapSpeed = 0f;
+	[SerializeField] float levelLoadDelay = 0f;
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
@@ -54,9 +55,6 @@ public class Rocket : MonoBehaviour {
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
 				//state = State.Grounded;
 			}
-
-			//Invoke ("SetGroundedState", 0.1f);
-
 			break;
 
 		default:
@@ -72,7 +70,6 @@ public class Rocket : MonoBehaviour {
 	}
 
 	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration){
-		rigidBody.isKinematic = true;
 		StartCoroutine (SnapPosition (position, posDuration));
 		StartCoroutine (SnapRotation (rotDuration));
 	}
@@ -110,6 +107,7 @@ public class Rocket : MonoBehaviour {
 	}
 
 	IEnumerator SnapPosition (Vector3 position, float duration){
+		rigidBody.isKinematic = true;
 		Vector3 currentPos = transform.position;
 		float progress = 0f;
 		float startTime = Time.time;
@@ -143,7 +141,17 @@ public class Rocket : MonoBehaviour {
 		audioSource.Stop ();
 		audioSource.PlayOneShot (deathSound);
 		deathparticles.Play ();
-		//Invoke ("RestartScene", levelLoadDelay);
+		Invoke ("LoadLastCheckpoint", levelLoadDelay);
 	}
+
+	private void LoadLastCheckpoint(){
+		Vector3 lastCheckpointLocation = GameManager.lastCheckpoint.transform.position;
+		transform.position = new Vector3 (lastCheckpointLocation.x, lastCheckpointLocation.y + ySnapPosition, lastCheckpointLocation.z);
+		transform.rotation = Quaternion.identity;
+		state = State.Grounded;
+	}
+  
+
+
 
 }

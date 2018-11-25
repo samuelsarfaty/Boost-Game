@@ -516,11 +516,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainThrust: 1200
   torqueFactor: 20
+  ySnapPosition: 0.9
+  snapSpeed: 0.5
   mainEngineSound: {fileID: 8300000, guid: c7bb6505f51a5944e9f3885d84ac4e8c, type: 3}
   deathSound: {fileID: 8300000, guid: 04576e267bd96ee418bd96ac41f60339, type: 3}
   mainEngineParticles: {fileID: 198217604521026492}
   deathparticles: {fileID: 198395594949698598}
-  snapSpeed: 0.5
   state: 0
 --- !u!198 &198217604521026492
 ParticleSystem:

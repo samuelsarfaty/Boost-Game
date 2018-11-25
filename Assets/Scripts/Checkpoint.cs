@@ -20,21 +20,13 @@ public class Checkpoint : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other){
-		if (other.gameObject == player.gameObject){
+		if (other.gameObject == player.gameObject && player.state != Rocket.State.Dying){
 			SetVirtualCameraIndex (nextCameraIndex);
-			//LocatePlayer ();
+			GameManager.lastCheckpoint = this;
 		}
 	}
 
 	void SetVirtualCameraIndex (int index){
 		cameraManager.SetInteger ("cameraIndex", index);
 	}
-
-	/*void LocatePlayer(){
-		if (player.state == Rocket.State.Flying){
-			Vector3 positionToSnap = new Vector3 (transform.position.x, transform.position.y + playerSnapYPosition, 0);
-			player.SnapToCheckpoint (positionToSnap, player.snapSpeed, player.snapSpeed);
-
-		}
-	}*/
 }
