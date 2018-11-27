@@ -35,6 +35,8 @@ public class Rocket : MonoBehaviour {
 		if(state != State.Dying){
 			RespondToInput();
 		}
+
+		//rigidBody.AddRelativeForce (-Vector3.up * gravityMultiplier, ForceMode.Acceleration);
 	}
 
 	void OnCollisionEnter(Collision other){
@@ -97,8 +99,8 @@ public class Rocket : MonoBehaviour {
 	}
 
 	private void ApplyThrust (){
-		float thrustThisFrame = mainThrust * Time.deltaTime;
-		rigidBody.AddRelativeForce (Vector3.up * thrustThisFrame, ForceMode.Acceleration);
+		//float thrustThisFrame = mainThrust * Time.deltaTime;
+		rigidBody.AddRelativeForce (Vector3.up * mainThrust, ForceMode.Acceleration);
 
 		if (!audioSource.isPlaying) {
 			audioSource.PlayOneShot (mainEngineSound);
