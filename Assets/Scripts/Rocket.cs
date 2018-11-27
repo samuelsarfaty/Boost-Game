@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Rocket : MonoBehaviour {
 
 	[SerializeField] float mainThrust = 0f;
+	[SerializeField] float gravityMultiplier = 0f;
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
 	[SerializeField] float ySnapPosition = 0f;
 	[SerializeField] float snapSpeed = 0f;
@@ -35,8 +36,7 @@ public class Rocket : MonoBehaviour {
 		if(state != State.Dying){
 			RespondToInput();
 		}
-
-		//rigidBody.AddRelativeForce (-Vector3.up * gravityMultiplier, ForceMode.Acceleration);
+			
 	}
 
 	void OnCollisionEnter(Collision other){
@@ -91,6 +91,7 @@ public class Rocket : MonoBehaviour {
 		} else {
 			mainEngineParticles.Stop ();
 			audioSource.Stop ();
+			rigidBody.AddForce (-Vector3.up * gravityMultiplier, ForceMode.Acceleration); //if player is not thrusting, push rocket down
 		}
 	}
 
