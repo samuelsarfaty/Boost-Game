@@ -8,9 +8,12 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float mainThrust = 0f;
 	[SerializeField] float gravityMultiplier = 0f;
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
+	[SerializeField] float landingSpeedThreshold = 0f;
 	[SerializeField] float ySnapPosition = 0f;
 	[SerializeField] float snapSpeed = 0f;
 	[SerializeField] float levelLoadDelay = 0f;
+
+	private float speed;
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
@@ -20,8 +23,8 @@ public class Rocket : MonoBehaviour {
 
 	private Rigidbody rigidBody;
 	private AudioSource audioSource;
-	private GameObject lastCheckpoint;
 
+	private GameObject lastCheckpoint;
 	private Animator cameraManager;
 
 
@@ -33,22 +36,23 @@ public class Rocket : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody> ();
 		rigidBody.centerOfMass = transform.position; //Control rotation by pivot
 		audioSource = GetComponent<AudioSource> ();
+
 		cameraManager = GameObject.Find("CameraManager").GetComponent<Animator>();
 
 	}
 
 	void FixedUpdate(){
+
+		speed = rigidBody.velocity.magnitude;
+
 		if(state != State.Dying){
 			RespondToInput();
 		}
-			
 	}
 
 	void OnCollisionEnter(Collision other){
 
 		if (state != State.Flying){ return; }
-
-		//if (state == State.Dying) {return;}
 
 		switch(other.gameObject.tag)
 		{
@@ -57,11 +61,15 @@ public class Rocket : MonoBehaviour {
 			break;
 
 		case "Checkpoint":
-			if(state == State.Flying){
+			if(other.contacts[0].thisCollider.name != "Body" && speed <= landingSpeedThreshold){
+				print (speed);
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
 				SetNextCheckpoint (other.gameObject.GetComponent<Checkpoint> ().nextCameraIndex, other.gameObject);
-				//state = State.Grounded;
+			} else {
+				print (speed);
+				StartDeathSequence ();
+				print (rigidBody.velocity.magnitude);
 			}
 			break;
 
