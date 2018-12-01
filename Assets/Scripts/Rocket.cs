@@ -62,12 +62,12 @@ public class Rocket : MonoBehaviour {
 
 		case "Checkpoint":
 			if(other.contacts[0].thisCollider.name != "Body" && speed <= landingSpeedThreshold){
-				print (speed);
+				//print (speed);
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
 				SetNextCheckpoint (other.gameObject.GetComponent<Checkpoint> ().nextCameraIndex, other.gameObject);
 			} else {
-				print (speed);
+				//print (speed);
 				StartDeathSequence ();
 				print (rigidBody.velocity.magnitude);
 			}
