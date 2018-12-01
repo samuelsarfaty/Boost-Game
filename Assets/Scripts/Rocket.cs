@@ -18,8 +18,11 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] ParticleSystem mainEngineParticles = null;
 	[SerializeField] ParticleSystem deathparticles = null;
 
-	Rigidbody rigidBody;
-	AudioSource audioSource;
+	private Rigidbody rigidBody;
+	private AudioSource audioSource;
+	private GameObject lastCheckpoint;
+
+	private Animator cameraManager;
 
 
 	public enum State {Flying, Dying, Grounded}
@@ -30,6 +33,8 @@ public class Rocket : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody> ();
 		rigidBody.centerOfMass = transform.position; //Control rotation by pivot
 		audioSource = GetComponent<AudioSource> ();
+		cameraManager = GameObject.Find("CameraManager").GetComponent<Animator>();
+
 	}
 
 	void FixedUpdate(){
@@ -55,6 +60,7 @@ public class Rocket : MonoBehaviour {
 			if(state == State.Flying){
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
+				SetNextCheckpoint (other.gameObject.GetComponent<Checkpoint> ().nextCameraIndex, other.gameObject);
 				//state = State.Grounded;
 			}
 			break;
@@ -71,10 +77,49 @@ public class Rocket : MonoBehaviour {
 		}
 	}
 
+	//Checkpoint Update Methods
+
 	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration){
 		StartCoroutine (SnapPosition (position, posDuration));
 		StartCoroutine (SnapRotation (rotDuration));
 	}
+
+	IEnumerator SnapPosition (Vector3 position, float duration){
+		rigidBody.isKinematic = true;
+		Vector3 currentPos = transform.position;
+		float progress = 0f;
+		float startTime = Time.time;
+
+		while (progress < 1){
+			progress = (Time.time - startTime) / duration;
+			transform.position = Vector3.Lerp (currentPos, position, progress);
+			yield return null;
+		}
+
+		rigidBody.isKinematic = false;
+		state = State.Grounded;
+	}
+
+	IEnumerator SnapRotation (float duration){
+		Quaternion currentRotation = transform.rotation;
+		float progress = 0f;
+		float startTime = Time.time;
+
+		while (progress < 1){
+			progress = (Time.time - startTime) / duration;
+			transform.rotation = Quaternion.Lerp (currentRotation, Quaternion.identity, progress);
+			yield return null;
+		}
+
+		rigidBody.isKinematic = false;
+	}
+
+	void SetNextCheckpoint(int index, GameObject currentCheckpoint){
+		cameraManager.SetInteger ("cameraIndex", index);
+		lastCheckpoint = currentCheckpoint;
+	}
+		
+	//Input Methods
 		
 	private void RespondToInput(){
 
@@ -109,35 +154,7 @@ public class Rocket : MonoBehaviour {
 		mainEngineParticles.Play ();
 	}
 
-	IEnumerator SnapPosition (Vector3 position, float duration){
-		rigidBody.isKinematic = true;
-		Vector3 currentPos = transform.position;
-		float progress = 0f;
-		float startTime = Time.time;
-
-		while (progress < 1){
-			progress = (Time.time - startTime) / duration;
-			transform.position = Vector3.Lerp (currentPos, position, progress);
-			yield return null;
-		}
-
-		rigidBody.isKinematic = false;
-		state = State.Grounded;
-	}
-
-	IEnumerator SnapRotation (float duration){
-		Quaternion currentRotation = transform.rotation;
-		float progress = 0f;
-		float startTime = Time.time;
-
-		while (progress < 1){
-			progress = (Time.time - startTime) / duration;
-			transform.rotation = Quaternion.Lerp (currentRotation, Quaternion.identity, progress);
-			yield return null;
-		}
-
-		rigidBody.isKinematic = false;
-	}
+	//Game Management
 
 	private void StartDeathSequence(){
 		state = State.Dying;
@@ -148,7 +165,7 @@ public class Rocket : MonoBehaviour {
 	}
 
 	private void LoadLastCheckpoint(){
-		Vector3 lastCheckpointLocation = GameManager.lastCheckpoint.transform.position;
+		Vector3 lastCheckpointLocation = lastCheckpoint.transform.position;
 		transform.position = new Vector3 (lastCheckpointLocation.x, lastCheckpointLocation.y + ySnapPosition, lastCheckpointLocation.z);
 		transform.rotation = Quaternion.identity;
 		state = State.Grounded;

@@ -3503,11 +3503,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114803345120075946, guid: dcae7aee19b8ded459816e6f791ff039,
-        type: 2}
-      propertyPath: gravityMultiplier
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcae7aee19b8ded459816e6f791ff039, type: 2}
   m_IsPrefabAsset: 0

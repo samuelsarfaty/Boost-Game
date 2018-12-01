@@ -484,6 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainThrust: 25
+  gravityMultiplier: 7
   torqueFactor: 20
   ySnapPosition: 0.9
   snapSpeed: 0.5
