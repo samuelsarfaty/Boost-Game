@@ -8,8 +8,7 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float mainThrust = 0f;
 	[SerializeField] float gravityMultiplier = 0f;
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
-	public float landingSpeedThreshold = 0f;
-	[SerializeField] float ySnapPosition = 0f;
+
 	[SerializeField] float snapSpeed = 0f;
 	[SerializeField] float levelLoadDelay = 0f;
 
@@ -19,7 +18,10 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] ParticleSystem mainEngineParticles = null;
 	[SerializeField] ParticleSystem deathparticles = null;
 
-	[HideInInspector] public float speed;
+	public float landingSpeedThreshold = 0f; 	//Used by checkpoint to check color
+	public float ySnapPosition = 0f; 			//Used by debug script to snap positions when debugging
+
+	[HideInInspector] public float speed; 		//Used by checkpoint to check color
 
 	private Rigidbody rigidBody;
 	private AudioSource audioSource;
