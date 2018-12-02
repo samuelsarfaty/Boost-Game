@@ -8,18 +8,18 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float mainThrust = 0f;
 	[SerializeField] float gravityMultiplier = 0f;
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
-	[SerializeField] float landingSpeedThreshold = 0f;
+	public float landingSpeedThreshold = 0f;
 	[SerializeField] float ySnapPosition = 0f;
 	[SerializeField] float snapSpeed = 0f;
 	[SerializeField] float levelLoadDelay = 0f;
-
-	private float speed;
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
 
 	[SerializeField] ParticleSystem mainEngineParticles = null;
 	[SerializeField] ParticleSystem deathparticles = null;
+
+	[HideInInspector] public float speed;
 
 	private Rigidbody rigidBody;
 	private AudioSource audioSource;
