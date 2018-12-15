@@ -66,7 +66,7 @@ public class Rocket : MonoBehaviour {
 			if(other.contacts[0].thisCollider.name != "Body" && speed <= landingSpeedThreshold){
 				//print (speed);
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, 0);
-				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed);
+				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed, other.transform.rotation);
 				SetNextCheckpoint (other.gameObject.GetComponent<Checkpoint> ().nextCameraIndex, other.gameObject);
 			} else {
 				//print (speed);
@@ -89,9 +89,9 @@ public class Rocket : MonoBehaviour {
 
 	//Checkpoint Update Methods
 
-	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration){
+	public void SnapToCheckpoint(Vector3 position, float posDuration, float rotDuration, Quaternion targetRotation){
 		StartCoroutine (SnapPosition (position, posDuration));
-		StartCoroutine (SnapRotation (rotDuration));
+		StartCoroutine (SnapRotation (targetRotation, rotDuration));
 	}
 
 	IEnumerator SnapPosition (Vector3 position, float duration){
@@ -110,14 +110,14 @@ public class Rocket : MonoBehaviour {
 		state = State.Grounded;
 	}
 
-	IEnumerator SnapRotation (float duration){
+	IEnumerator SnapRotation (Quaternion rotation, float duration){
 		Quaternion currentRotation = transform.rotation;
 		float progress = 0f;
 		float startTime = Time.time;
 
 		while (progress < 1){
 			progress = (Time.time - startTime) / duration;
-			transform.rotation = Quaternion.Lerp (currentRotation, Quaternion.identity, progress);
+			transform.rotation = Quaternion.Lerp (currentRotation, rotation, progress);
 			yield return null;
 		}
 
