@@ -21,7 +21,7 @@ public class CheckpointSkipper : MonoBehaviour {
 
 		if(selectedCheckpoint > 0){
 			selectedCheckpoint--;
-			Vector3 nextPos = new Vector3 (checkpoints [selectedCheckpoint].position.x, checkpoints [selectedCheckpoint].position.y + player.ySnapPosition, 0);
+			Vector3 nextPos = new Vector3 (checkpoints [selectedCheckpoint].position.x, checkpoints [selectedCheckpoint].position.y + player.ySnapPosition, checkpoints[selectedCheckpoint].position.z);
 			player.transform.position = nextPos;
 		}
 	}
