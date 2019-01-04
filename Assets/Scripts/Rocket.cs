@@ -10,7 +10,7 @@ public class Rocket : MonoBehaviour {
 	[SerializeField] float torqueFactor = 0f; //TODO used for rotation
 
 	[SerializeField] float snapSpeed = 0f;
-	[SerializeField] float levelLoadDelay = 0f;
+	public float levelLoadDelay = 0f;
 
 	[SerializeField] AudioClip mainEngineSound = null;
 	[SerializeField] AudioClip deathSound = null;
@@ -64,12 +64,10 @@ public class Rocket : MonoBehaviour {
 
 		case "Checkpoint":
 			if(other.contacts[0].thisCollider.name != "Body" && speed <= landingSpeedThreshold){
-				//print (speed);
 				Vector3 positionToSnap = new Vector3 (other.transform.position.x, other.transform.position.y + ySnapPosition, other.transform.position.z);
 				SnapToCheckpoint (positionToSnap, snapSpeed, snapSpeed, other.transform.rotation);
 				SetNextCheckpoint (other.gameObject.GetComponent<Checkpoint> ().nextCameraIndex, other.gameObject);
 			} else {
-				//print (speed);
 				StartDeathSequence ();
 				print (rigidBody.velocity.magnitude);
 			}

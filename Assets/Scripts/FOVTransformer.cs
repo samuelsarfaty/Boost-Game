@@ -21,6 +21,7 @@ public class FOVTransformer : MonoBehaviour {
 	void Update(){
 
 		if(!trackedDolly){ return; }
+		if(startFOV == targetFOV){ return; }
 
 		float currentDollyPos = trackedDolly.m_PathPosition;
 
