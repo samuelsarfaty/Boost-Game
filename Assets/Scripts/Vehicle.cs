@@ -24,18 +24,32 @@ public class Vehicle : MonoBehaviour {
 		}	
 	}
 
+	void OnCollisionEnter(Collision other){
+		if (other.gameObject.tag == "Stop"){
+			Stop ();
+		}
+	}
+
 	void Update(){
 		if(wasActivated){
-			transform.position += movementDirection * speed * Time.deltaTime;
+			Move ();
 		}
 
 		if (player.state == Rocket.State.Dying){
 			Invoke ("Reset", player.levelLoadDelay);
-			wasActivated = false;
 		}
+	}
+
+	void Move(){
+		transform.position += movementDirection * speed * Time.deltaTime;
+	}
+
+	void Stop(){
+		wasActivated = false;
 	}
 
 	void Reset(){
 		transform.position = startPos;
+		wasActivated = false;
 	}
 }
